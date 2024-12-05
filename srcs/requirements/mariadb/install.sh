@@ -1,0 +1,11 @@
+set -e
+
+export QUERY_FILE=/query.sql
+
+echo "CREATE DATABASE IF NOT EXISTS \`$WP_DB_NAME\`;" >> $QUERY_FILE
+echo "CREATE USER IF NOT EXISTS \`$WP_DB_USER\`@'%' IDENTIFIED BY '$WP_DB_PASSWORD';" >> $QUERY_FILE
+echo "GRANT ALL PRIVILEGES ON \`$WP_DB_NAME\`.* TO \`$WP_DB_USER\`@'%';" >> $QUERY_FILE
+echo "FLUSH PRIVILEGES;" >> $QUERY_FILE
+chmod +rw $QUERY_FILE
+
+mysqld --init-file=$QUERY_FILE
